@@ -22,8 +22,25 @@ module PhaseDiagrams
 using Functional, PointGroups
 export ModeAnsatz, A₁projection, mode
 
-### Mode expansions ###
 
+"""
+	ModeAnsatz
+
+Make single mode ansatz from a reciprocal lattice vector q.
+
+Given a reciprocal lattice vector q, the ansatz function is of the form:
+
+	\$\$ f(x) = cos(q⋅x) \$\$
+
+The single mode ansatz is callable, as it is a function. The call
+signature for a mode ansatz f is
+	f(x::Vector)
+
+**Summary:**
+	ModeAnsatz <: Function
+**Subtypes:**
+	None
+"""
 type ModeAnsatz <: Function
 	q::Vector
 	F::Function
@@ -33,6 +50,11 @@ type ModeAnsatz <: Function
 	end
 end
 
+"""
+	mode(f::ModeAnsatz)
+
+Return reciprocal lattice mode of ansatz
+"""
 function mode(f::ModeAnsatz)
 	return f.q
 end
@@ -41,6 +63,11 @@ function (f::ModeAnsatz)(x::Vector)
 	return f.F(x)
 end
 
+"""
+	A₁projection(f::ModeAnsatz, G::PointGroup)
+
+Return A₁ symmetry adapted ansatz of f for the group G
+"""
 function A₁projection(f::ModeAnsatz, G::PointGroup)
 	return [ModeAnsatz(O*f.q) for O in G.g] |> sum
 end
