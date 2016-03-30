@@ -21,14 +21,28 @@ module PointGroups
 
 export PointGroup, oblique, rectangular, centered_rectangular, hexagonal, square
 
-# Group is defined by a Tuple of matrices
+"""
+	PointGroup{N}
 
-type PointGroup
-	g::NTuple					# Could be more specific NTuple{N, Matrix...}??
-	function PointGroup(g...)
-		new(g)
-	end
+A tuple of symmetry elements (matrices) that follow the group multiplication
+law.
+
+The **N** of the group is the number of symmetry elements in the group. The
+tuple of a point group G can be accessed at G.g.
+
+**Summary:**
+
+	PointGroup <: NTuple{N, Matrix}
+
+**Subtypes:**
+
+	Union{}
+"""
+type PointGroup{N} <: NTuple{N, Matrix}
+	g::NTuple{N, Matrix}
 end
+
+PointGroup(g...) = PointGroup(g) # Allow splat construction instead of tuple
 
 # 2D group generators
 
