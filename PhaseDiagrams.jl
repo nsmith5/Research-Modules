@@ -19,7 +19,7 @@
 
 module PhaseDiagrams
 
-using Functional, PointGroups
+using Functional, PointGroups, BravaisLattices
 export ModeAnsatz, A₁projection, mode
 
 
@@ -48,6 +48,19 @@ type ModeAnsatz <: Function
 		f = (x::Vector) -> cos(q⋅x)
 		new(q, f)
 	end
+end
+
+"""
+	ModeAnsatz(q::BravaisLattice)
+
+Create mode ansatz from the basis of a bravais lattice.
+
+The bravais lattice should be the reciprocal lattice of some lattice of
+interest. If this mode ansatz is passed to the A₁projection the result will
+be a one-mode approximation.
+"""
+function ModeAnsatz(q::BravaisLattice)
+	[ModeAnsatz(k) for k in q.basis] |> sum
 end
 
 """

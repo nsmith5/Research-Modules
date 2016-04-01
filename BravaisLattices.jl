@@ -22,7 +22,7 @@ module BravaisLattices
 export BravaisLattice, reciprocal
 
 type BravaisLattice{N}
-	a::NTuple{N, Vector}
+	basis::NTuple{N, Vector}
 	function BravaisLattice(a...)
 		@assert validbasis(a)
 		if N == length(a)
@@ -36,15 +36,15 @@ function reciprocal(B::BravaisLattice{2})
 	# Construct reciprocal lattic
 	R = [[0 -1]
 		 [1  0]]	# 90 degree rotation operator
-	b1 = 2π*(-R*B.a[2])/(B.a[1]⋅(-R*B.a[2]))
-	b2 = 2π*(-R*B.a[1])/(B.a[2]⋅(-R*B.a[1]))
+	b1 = 2π*(-R*B.basis[2])/(B.basis[1]⋅(-R*B.basis[2]))
+	b2 = 2π*(-R*B.basis[1])/(B.basis[2]⋅(-R*B.basis[1]))
 	return BravaisLattice{2}(b1, b2)
 end
 
 function reciprocal(B::BravaisLattice{3})
-	b1 = 2π*(B.a[2]×B.a[3])/(B.a[1]⋅(B.a[2]×B.a[3]))
-	b2 = 2π*(B.a[3]×B.a[1])/(B.a[2]⋅(B.a[3]×B.a[1]))
-	b3 = 2π*(B.a[1]×B.a[2])/(B.a[3]⋅(B.a[1]×B.a[2]))
+	b1 = 2π*(B.basis[2]×B.basis[3])/(B.basis[1]⋅(B.basis[2]×B.basis[3]))
+	b2 = 2π*(B.basis[3]×B.basis[1])/(B.basis[2]⋅(B.basis[3]×B.basis[1]))
+	b3 = 2π*(B.basis[1]×B.basis[2])/(B.basis[3]⋅(B.basis[1]×B.basis[2]))
 	return BravaisLattice{3}(b1, b2, b3)
 end
 
